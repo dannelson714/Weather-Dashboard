@@ -1,7 +1,7 @@
 :root {
     --blue: #2980b9;
     --lightblue: #3498db;
-    --light: #ecf0f1;
+    --light: white;
     --darkblue: #2c3e50;
     --red: #e74c3c;
   }
@@ -11,6 +11,12 @@
     font-weight: 400;
     background-color: var(--light);
     color: var(--darkblue);
+  }
+
+  header {
+    background-image: linear-gradient(to right, var(--lightblue), var(--darkblue));
+    
+
   }
   
   h1,
@@ -65,4 +71,17 @@
   .delete-project-btn {
     cursor: pointer;
   }
+
+  /* ################################# */
+/* Now Dan's Own. Remove above stuff as needed! */
+
+#city-list li {
+    display: flex;
+    justify-content: center;
+    background-color: lightgrey;
+    margin-top: .5em;
+    margin-bottom: .5em;
+    border-radius: .5em;
+}
+
   

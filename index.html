@@ -18,34 +18,25 @@
 
   <header class="jumbotron jumbotron-fluid custom-jumbotron">
     <div class="container text-center">
-      <h1>Project Tracker</h1>
-      <h2>Current Time &amp; Date: <br /> <span id="time-display">00:00:00</span></h2>
+      <h1>Weather Dashboard</h1>
     </div>
   </header>
 
   <main class="container-fluid">
     <div class="row">
       <section class="col-12 col-md-4 col-lg-3">
-        <div class="card custom-card">
-          <h3 class="card-header">
-            Instructions
-          </h3>
-          <div class="card-body">
-            <div class="card-text">
-              Click the button below to open a form and provide information for the following:
+        <div class="card">
+            <div class="card-body">
+              <h1 class="card-title">Search for a City:</h1>
+              <div class="form-group">
+                <input type="text" id="city-name-input" class="form-control" placeholder="San Diego"
+                  required />
+              </div>
+              <a href="#" id="searchBtn" class="btn btn-primary btn-block">Search</a>
             </div>
           </div>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">Project Name</li>
-            <li class="list-group-item">Project Type</li>
-            <li class="list-group-item">Due Date</li>
-            <li class="list-group-item">Hourly Rate</li>
-          </ul>
-          <div class="card-footer">
-            <button class="btn btn-block custom-btn" data-toggle="modal" data-target="#project-modal">Add
-              Project</button>
-          </div>
-        </div>
+          <div>
+            <ul class="list-group" id="city-list"></ul>
       </section>
 
       <section class="col-12 col-md-8 col-lg-9">
@@ -84,7 +75,7 @@
           <div class="modal-body">
             <div class="form-group">
               <label for="project-name-input">Project Name</label>
-              <input type="text" id="project-name-input" class="form-control" placeholder="Enter the project's name"
+              <input type="text" id="project-name-input" class="form-control" placeholder="San Diego"
                 required />
             </div>
 
