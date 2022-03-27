@@ -1,25 +1,51 @@
 var cityID = $("#city-name-input");
 var searchBtn = $('#searchBtn');
 var cityList = $('#city-list');
+var cityStoredList = [];
 
+//Draws list from local storage and prints it on reload
+function printList() {
+    if (localStorage.getItem("cityList") === null) {
+        return
+    }
+    else {
+        cityStoredList = JSON.parse(localStorage.getItem('cityList'));
+        console.log (cityStoredList);
+        for (i=0; i<cityStoredList.length; i++) {
+            var listEl = $('<li>');
+            listEl.addClass('list-group-item').text(cityStoredList[i]);
+            listEl.appendTo(cityList);
+        };
+    };
+};
+
+printList()
+
+//Adds a new item to list, stores list
 var printCity = function (name) {
+    cityStoredList.push(name);
+    //limits the number of items that can be held in storage to 10
+    if (cityStoredList.length > 9) {
+        var city = document.getElementById("city-list");
+        city.removeChild(city.firstElementChild);
+    }
     var listEl = $('<li>');
     listEl.addClass('list-group-item').text(name);
     listEl.appendTo(cityList);
+    console.log(cityList);
+    localStorage.setItem("cityList", JSON.stringify(cityStoredList));
 };
 
+//Establishes search button functionality
 var handleFormClick = function (event) {
     event.preventDefault();
-
-    var cityInput = cityID.val();
-
+    var cityInput = cityID.val().trim();
     if (!cityInput) {
         console.log('You need to name a city!');
         return;
     }
-
     printCity(cityInput);
-
+    getWeatherApi(cityInput)
     cityID.val('');
 };
 
@@ -27,109 +53,23 @@ searchBtn.on('click', handleFormClick);
 
 
 
-searchBtn.on('click', function(){
-
-
-})
-// projectDisplayEl.on('click', '.delete-project-btn', handleDeleteProject);
 
 
 
+weatherToday = $('#weather-today');
+
+function getWeatherApi(location) {
+    apiKey = '12117bc8be17aa8c9d5018f64b84cc34';
+    cityName = location + ", US";
+    var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + apiKey +"&units=imperial";
+    fetch(queryURL)
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+            console.log(data);
+        })
+    }
 
 
 
-
-
-
-// // save reference to important DOM elements
-
-
-
-// var timeDisplayEl = $('#time-display');
-// var projectDisplayEl = $('#project-display');
-// var projectModalEl = $('#project-modal');
-// var projectFormEl = $('#project-form');
-// var projectNameInputEl = $('#project-name-input');
-// var projectTypeInputEl = $('#project-type-input');
-// var hourlyRateInputEl = $('#hourly-rate-input');
-// var dueDateInputEl = $('#due-date-input');
-
-// // handle displaying the time
-// function displayTime() {
-//   var rightNow = moment().format('MMM DD, YYYY [at] hh:mm:ss a');
-//   timeDisplayEl.text(rightNow);
-// }
-
-// // handle printing project data to the page
-// function printProjectData(name, type, hourlyRate, dueDate) {
-//   var projectRowEl = $('<tr>');
-
-//   var projectNameTdEl = $('<td>').addClass('p-2').text(name);
-
-//   var projectTypeTdEl = $('<td>').addClass('p-2').text(type);
-
-//   var rateTdEl = $('<td>').addClass('p-2').text(hourlyRate);
-
-//   var dueDateTdEl = $('<td>').addClass('p-2').text(dueDate);
-
-//   var daysToDate = moment(dueDate, 'MM/DD/YYYY').diff(moment(), 'days');
-//   var daysLeftTdEl = $('<td>').addClass('p-2').text(daysToDate);
-
-//   var totalEarnings = calculateTotalEarnings(hourlyRate, daysToDate);
-
-//   // You can also chain methods onto new lines to keep code clean
-//   var totalTdEl = $('<td>')
-//     .addClass('p-2')
-//     .text('$' + totalEarnings);
-
-//   var deleteProjectBtn = $('<td>')
-//     .addClass('p-2 delete-project-btn text-center')
-//     .text('X');
-
-//   // By listing each `<td>` variable as an argument, each one will be appended in that order
-//   projectRowEl.append(
-//     projectNameTdEl,
-//     projectTypeTdEl,
-//     rateTdEl,
-//     dueDateTdEl,
-//     daysLeftTdEl,
-//     totalTdEl,
-//     deleteProjectBtn
-//   );
-
-//   projectDisplayEl.append(projectRowEl);
-
-//   projectModalEl.modal('hide');
-// }
-
-// function calculateTotalEarnings(rate, days) {
-//   var dailyTotal = rate * 8;
-//   var total = dailyTotal * days;
-//   return total;
-// }
-
-// function handleDeleteProject(event) {
-//   console.log(event.target);
-//   var btnClicked = $(event.target);
-//   btnClicked.parent('tr').remove();
-// }
-
-// // handle project form submission
-// function handleProjectFormSubmit(event) {
-//   event.preventDefault();
-
-//   var projectName = projectNameInputEl.val().trim();
-//   var projectType = projectTypeInputEl.val().trim();
-//   var hourlyRate = hourlyRateInputEl.val().trim();
-//   var dueDate = dueDateInputEl.val().trim();
-
-//   printProjectData(projectName, projectType, hourlyRate, dueDate);
-
-//   projectFormEl[0].reset();
-// }
-
-// projectFormEl.on('submit', handleProjectFormSubmit);
-// projectDisplayEl.on('click', '.delete-project-btn', handleDeleteProject);
-// dueDateInputEl.datepicker({ minDate: 1 });
-
-// setInterval(displayTime, 1000);

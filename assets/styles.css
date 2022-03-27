@@ -84,4 +84,8 @@
     border-radius: .5em;
 }
 
+#weatherToday {
+  border: 1px solid black;
+}
+
   
