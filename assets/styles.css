@@ -84,8 +84,11 @@
     border-radius: .5em;
 }
 
-#weatherToday {
+#weather-today {
   border: 1px solid black;
 }
 
-  
+.uvi-good {
+  background-color: green;
+  border-radius: .5em;
+}

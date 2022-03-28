@@ -45,7 +45,8 @@ var handleFormClick = function (event) {
         return;
     }
     printCity(cityInput);
-    getWeatherApi(cityInput)
+    clearPrevData();
+    getWeatherApi(cityInput);
     cityID.val('');
 };
 
@@ -54,13 +55,10 @@ searchBtn.on('click', handleFormClick);
 
 
 
-
-
-weatherToday = $('#weather-today');
-
 function getWeatherApi(location) {
     apiKey = '12117bc8be17aa8c9d5018f64b84cc34';
     cityName = location + ", US";
+    console.log(cityName);
     var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + apiKey +"&units=imperial";
     fetch(queryURL)
         .then(function (response) {
@@ -68,8 +66,59 @@ function getWeatherApi(location) {
         })
         .then(function (data) {
             console.log(data);
-        })
+            weatherToday = $('#weather-today');
+            var cityInfo = $('<h2>');
+            var Temp = $('<p>');
+            var Wind = $('<p>');
+            var Humid = $('<p>');
+            var UV = $('<p>');
+            var icon = $('<img>');
+            var imageID = data.weather[0].icon;
+            var lonVal = data.coord.lon;
+            var latVal = data.coord.lat;
+            console.log(data.weather);
+            console.log(imageID);
+            var iconURL = "http://openweathermap.org/img/wn/"+imageID+"@2x.png";
+            icon.attr('src', iconURL);
+            Temp.text(" Temp: " + data.main.temp);
+            Wind.text(" Wind " + data.wind.speed)
+            Humid.text(" Humidity: " + data.main.humidity);
+            cityInfo.text(data.name);
+            cityInfo.append(icon);
+
+            weatherToday.append(cityInfo);
+            weatherToday.append(Temp);
+            weatherToday.append(Wind);
+            weatherToday.append(Humid)
+
+            //Taking lat and lon values from previous API call to formulate an openweather one-call for UV and forecast data for
+            //city by name
+            queryURL2 = "http://api.openweathermap.org/data/2.5/onecall?lat="+latVal+"&lon="+lonVal+"&appid=" + apiKey +"&units=imperial";
+            fetch(queryURL2)
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (data) {
+                console.log(data);
+                if (data.current.uvi <= 2) {
+                    UV.text(data.current.uvi).attr('class', 'uvi-good');
+                    weatherToday.append(UV);
+                }
+            })   
+            
+    });
+}
+//Clears out child elements of id='weather-today'
+function clearPrevData () {
+    var toClear = $('#weather-today');
+    toClear.empty()
+}
+
+function UVIdata (data) {
+    if (data.current.uvi <= 2) {
+        UV.text(data.current.uvi).attr('.uvi-good');
+        weatherToday.append(UV);
     }
 
-
+}
 
