@@ -2,6 +2,7 @@ var cityID = $("#city-name-input");
 var searchBtn = $('#searchBtn');
 var cityList = $('#city-list');
 var cityStoredList = [];
+var cityDisplayEl = $('#city-list');
 
 //Draws list from local storage and prints it on reload
 function printList() {
@@ -12,7 +13,7 @@ function printList() {
         cityStoredList = JSON.parse(localStorage.getItem('cityList'));
         for (i=0; i<cityStoredList.length; i++) {
             var listEl = $('<li>');
-            listEl.addClass('list-group-item').text(cityStoredList[i]);
+            listEl.addClass('list-group-item select-city-btn').text(cityStoredList[i]);
             listEl.appendTo(cityList);
         };
         return cityStoredList;
@@ -31,7 +32,7 @@ var printCity = function (name) {
         cityStoredList = cityStoredList.slice(1);
     }
     var listEl = $('<li>');
-    listEl.addClass('list-group-item').text(name);
+    listEl.addClass('list-group-item select-city-btn').text(name);
     listEl.appendTo(cityList);
     localStorage.setItem("cityList", JSON.stringify(cityStoredList));
 };
@@ -49,11 +50,6 @@ var handleFormClick = function (event) {
     getWeatherApi(cityInput);
     cityID.val('');
 };
-
-searchBtn.on('click', handleFormClick);
-
-
-
 
 function getWeatherApi(location) {
     apiKey = '12117bc8be17aa8c9d5018f64b84cc34';
@@ -188,3 +184,13 @@ function createCard(data, card, i) {
     card.append(cardHumid);
 }
 
+//Handle city selection from stored list
+function handleSelectCityBtn (event) {
+    console.log(event.target);
+    var btnClicked = $(event.target).text();
+    clearPrevData();
+    getWeatherApi(btnClicked);
+}
+
+searchBtn.on('click', handleFormClick);
+cityDisplayEl.on('click', '.select-city-btn', handleSelectCityBtn);

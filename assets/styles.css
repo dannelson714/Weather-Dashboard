@@ -107,3 +107,7 @@
 #card-5 {
   background-image: linear-gradient(to right, var(--lightblue), var(--darkblue));
 }
+
+.select-city-btn {
+  cursor: pointer;
+}
