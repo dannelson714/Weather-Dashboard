@@ -54,7 +54,7 @@ var handleFormClick = function (event) {
 function getWeatherApi(location) {
     apiKey = '12117bc8be17aa8c9d5018f64b84cc34';
     cityName = location + ", US";
-    var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + apiKey +"&units=imperial";
+    var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid=" + apiKey +"&units=imperial";
     fetch(queryURL)
         .then(function (response) {
             return response.json();
@@ -71,7 +71,7 @@ function getWeatherApi(location) {
             var imageID = data.weather[0].icon;
             var lonVal = data.coord.lon;
             var latVal = data.coord.lat;
-            var iconURL = "http://openweathermap.org/img/wn/"+imageID+"@2x.png";
+            var iconURL = "https://openweathermap.org/img/wn/"+imageID+"@2x.png";
             icon.attr('src', iconURL);
             Temp.text(" Temp: " + data.main.temp + "°F");
             Wind.text(" Wind " + data.wind.speed + "MPH")
@@ -88,7 +88,7 @@ function getWeatherApi(location) {
 
             //Taking lat and lon values from previous API call to formulate an openweather one-call for UV and forecast data for
             //city by name
-            queryURL2 = "http://api.openweathermap.org/data/2.5/onecall?lat="+latVal+"&lon="+lonVal+"&appid=" + apiKey +"&units=imperial";
+            queryURL2 = "https://api.openweathermap.org/data/2.5/onecall?lat="+latVal+"&lon="+lonVal+"&appid=" + apiKey +"&units=imperial";
             fetch(queryURL2)
                 .then(function (response) {
                     return response.json();
@@ -170,7 +170,7 @@ function createCard(data, card, i) {
     
     cardDate = moment.unix(data.daily[i].dt).format("MM/DD/YYYY")
     imageIcon = data.daily[i].weather[0].icon;
-    var iconURL = "http://openweathermap.org/img/wn/"+imageIcon+"@2x.png";
+    var iconURL = "https://openweathermap.org/img/wn/"+imageIcon+"@2x.png";
     cardIcon.attr('src', iconURL);
     cardHead.text(cardDate);
     cardTemp.text("Temp: " + data.daily[i].temp.day+"°F");
